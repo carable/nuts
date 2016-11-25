@@ -1,7 +1,7 @@
 var express = require('express');
 var uuid = require('uuid');
 var basicAuth = require('basic-auth');
-var Analytics = require('analytics-node');
+var appInsights = require('applicationinsights');
 var nuts = require('./');
 
 var app = express();
@@ -12,9 +12,10 @@ var apiAuth =  {
 };
 
 var analytics = undefined;
-var downloadEvent = process.env.ANALYTICS_EVENT_DOWNLOAD || 'download';
-if (process.env.ANALYTICS_TOKEN) {
-    analytics = new Analytics(process.env.ANALYTICS_TOKEN);
+var analyticsToken = process.env.APPINSIGHTS_INSTRUMENTATIONKEY
+if (analyticsToken) {
+    appInsights.setup(analyticsToken).start();
+    analytics = appInsights.getClient();
 }
 
 var myNuts = nuts.Nuts({
@@ -58,20 +59,17 @@ myNuts.before('download', function(download, next) {
 myNuts.after('download', function(download, next) {
     console.log('downloaded', download.platform.filename, "for version", download.version.tag, "on channel", download.version.channel, "for", download.platform.type);
 
-    // Track on segment if enabled
+    // Track on Insights if enabled
     if (analytics) {
         var userId = download.req.query.user;
 
-        analytics.track({
-            event: downloadEvent,
+        analytics.trackEvent('download', {
             anonymousId: userId? null : uuid.v4(),
             userId: userId,
-            properties: {
-                version: download.version.tag,
-                channel: download.version.channel,
-                platform: download.platform.type,
-                os: nuts.platforms.toType(download.platform.type)
-            }
+            version: download.version.tag,
+            channel: download.version.channel,
+            platform: download.platform.type,
+            os: nuts.platforms.toType(download.platform.type)
         });
     }
 

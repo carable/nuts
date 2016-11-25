@@ -9,7 +9,7 @@
     "node" : "~6.9.1"
   },
   "dependencies": {
-    "analytics-node": "1.2.2",
+    "applicationinsights": "0.17.0",
     "basic-auth": "1.0.3",
     "body-parser": "1.12.3",
     "destroy": "1.0.3",
