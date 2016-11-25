@@ -5,6 +5,9 @@
   "main": "./lib/index.js",
   "homepage": "https://github.com/unindented/nuts",
   "license": "Apache-2.0",
+  "engines": {
+    "node" : "~6.9.1"
+  },
   "dependencies": {
     "analytics-node": "1.2.2",
     "basic-auth": "1.0.3",
