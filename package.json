@@ -48,7 +48,7 @@
     "url": "https://github.com/unindented/nuts.git"
   },
   "scripts": {
-    "start": "node bin/web.js",
+    "start": "node server.js",
     "test": "mocha --reporter list"
   }
 }
