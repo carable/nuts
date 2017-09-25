@@ -1,5 +1,21 @@
 FROM mhart/alpine-node:5.8.0
 
+# enable backports
+RUN echo 'deb http://deb.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/backports.list
+
+# patchy mcpatchface
+RUN apt-get update && \
+  apt-get -y dist-upgrade && \
+  apt-get clean && \
+  apt-get install -y jq python-dev python-pip && \
+  rm -rf /var/lib/apt/lists/*
+
+# set up tool for accessing parameter store data
+ENV AWS_DEFAULT_REGION=us-west-2
+RUN pip install awscli && \
+  curl -sL https://gist.github.com/rafaelmagu/782e1a6e3e1e70799e38682f9cf069e1/raw/065a6de34b1e42ec1229ab00cd09c684e4662304/ssm-params-to-env.sh > /usr/local/bin/ssm-params-to-env.sh && \
+  chmod +x /usr/local/bin/ssm-params-to-env.sh
+
 # Switch to /app
 WORKDIR /app
 # Install deps
