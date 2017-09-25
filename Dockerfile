@@ -1,14 +1,12 @@
 FROM mhart/alpine-node:5.8.0
 
-# enable backports
-RUN echo 'deb http://deb.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/backports.list
-
 # patchy mcpatchface
-RUN apt-get update && \
-  apt-get -y dist-upgrade && \
-  apt-get clean && \
-  apt-get install -y jq python-dev python-pip && \
-  rm -rf /var/lib/apt/lists/*
+RUN apk update \
+    && apk add python \
+    && apk add py-pip \
+    && apk add jq \
+    && apk add curl \
+    && rm -rf /var/cache/apk/*
 
 # set up tool for accessing parameter store data
 ENV AWS_DEFAULT_REGION=us-west-2
