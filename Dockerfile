@@ -2,10 +2,7 @@ FROM mhart/alpine-node:5.8.0
 
 # patchy mcpatchface
 RUN apk update \
-    && apk add python \
-    && apk add py-pip \
-    && apk add jq \
-    && apk add curl \
+    && apk add python py-pip jq curl bash \
     && rm -rf /var/cache/apk/*
 
 # set up tool for accessing parameter store data
