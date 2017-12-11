@@ -1,4 +1,4 @@
-# Nuts
+# Nuts [![Build Status](https://travis-ci.org/carable/nuts.svg?branch=master)](https://travis-ci.org/carable/nuts)
 
 Nuts is a simple (and smart) application to serve desktop-application releases.
 
