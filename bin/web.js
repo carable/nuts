@@ -11,6 +11,14 @@ var apiAuth =  {
     password: process.env.API_PASSWORD
 };
 
+if (process.env.AIRBRAKE_ID && process.env.AIRBRAKE_KEY) {
+    if (process.env.AIRBRAKE_HOST) {
+	process.env.AIRBRAKE_SERVER = process.env.AIRBRAKE_HOST;
+    }
+    var airbrake = require('airbrake').createClient(process.env.AIRBRAKE_ID, process.env.AIRBRAKE_KEY);
+    airbrake.handleExceptions();
+}
+
 var analytics = undefined;
 var downloadEvent = process.env.ANALYTICS_EVENT_DOWNLOAD || 'download';
 if (process.env.ANALYTICS_TOKEN) {
@@ -121,7 +129,7 @@ myNuts.init()
 
 // Start the HTTP server
 .then(function() {
-    var server = app.listen(process.env.PORT || 5000, function () {
+    var server = app.listen(process.env.PORT || 5000, process.env.NUTS_LISTEN_ADDRESS || '127.0.0.1', function () {
         var host = server.address().address;
         var port = server.address().port;
 
